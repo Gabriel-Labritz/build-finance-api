@@ -45,4 +45,13 @@ public class User {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public User(String name, String email, String passwordHash) {
+        this.name = name;
+        this.email = email;
+        this.password = passwordHash;
+        this.verified = false;
+        this.active = false;
+        this.a2fEnabled = false;
+    }
 }
