@@ -26,4 +26,10 @@ public class EmailVerificationToken {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    public EmailVerificationToken(byte[] tokenHash, User user) {
+        this.tokenHash = tokenHash;
+        this.expiresAt = LocalDateTime.now().plusMinutes(30);
+        this.user = user;
+    }
 }
