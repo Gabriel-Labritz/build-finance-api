@@ -54,4 +54,9 @@ public class User {
         this.active = false;
         this.a2fEnabled = false;
     }
+
+    public void verify() {
+        this.verified = true;
+        this.active = true;
+    }
 }

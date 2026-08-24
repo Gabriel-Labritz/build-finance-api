@@ -1,6 +1,7 @@
 package com.gabriellabritz.build_finance_api.domain.authentication.email_verificaton_tokens;
 
 import com.gabriellabritz.build_finance_api.domain.user.User;
+import com.gabriellabritz.build_finance_api.infra.exceptions.business.email_verification_tokens.InvalidVerificationTokenException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,15 @@ public class EmailVerificationToken {
         this.tokenHash = tokenHash;
         this.expiresAt = LocalDateTime.now().plusMinutes(30);
         this.user = user;
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiresAt);
+    }
+
+    public void validate() {
+        if (isExpired()) {
+            throw new InvalidVerificationTokenException("Token de verificação expirado.");
+        }
     }
 }

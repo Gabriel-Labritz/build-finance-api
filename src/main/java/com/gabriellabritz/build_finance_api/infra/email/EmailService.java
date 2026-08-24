@@ -1,5 +1,7 @@
 package com.gabriellabritz.build_finance_api.infra.email;
 
+import com.gabriellabritz.build_finance_api.infra.exceptions.infra.EmailSendingException;
+import com.gabriellabritz.build_finance_api.infra.exceptions.infra.LoadTemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,13 +46,13 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(bodyEmail, true);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new EmailSendingException(e);
         }
 
         javaMailSender.send(message);
     }
 
-    public void sendEmailVerification(String userName, String userEmail, String token) {
+    public void sendVerificationEmail(String userName, String userEmail, String token) {
         String verificationUrl = urlSite.concat("/account/verify-account?token=").concat(token);
         String subject = "Build Finance - Verifique sua conta";
 
@@ -65,7 +67,7 @@ public class EmailService {
         try {
             return resource.getContentAsString(StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao carregar template", e);
+            throw new LoadTemplateException(e);
         }
     }
 }
