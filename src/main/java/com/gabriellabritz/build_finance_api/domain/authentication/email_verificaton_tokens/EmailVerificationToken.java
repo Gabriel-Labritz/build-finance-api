@@ -43,4 +43,9 @@ public class EmailVerificationToken {
             throw new InvalidVerificationTokenException("Token de verificação expirado.");
         }
     }
+
+    public void replaceToken(byte[] newTokenHash) {
+        this.tokenHash = newTokenHash;
+        this.expiresAt = LocalDateTime.now().plusMinutes(30);
+    }
 }

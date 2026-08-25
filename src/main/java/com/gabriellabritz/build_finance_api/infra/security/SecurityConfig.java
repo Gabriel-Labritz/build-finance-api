@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/auth/**").permitAll();
                     req.requestMatchers("/account/verify-account").permitAll();
+                    req.requestMatchers("/account/resend-verification").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .build();

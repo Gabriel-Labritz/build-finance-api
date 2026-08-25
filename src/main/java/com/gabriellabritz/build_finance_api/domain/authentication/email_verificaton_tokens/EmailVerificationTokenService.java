@@ -2,9 +2,12 @@ package com.gabriellabritz.build_finance_api.domain.authentication.email_verific
 
 import com.gabriellabritz.build_finance_api.domain.authentication.email_verificaton_tokens.dtos.EmailVerificationResponseDto;
 import com.gabriellabritz.build_finance_api.domain.user.User;
+import com.gabriellabritz.build_finance_api.domain.user.UserRepository;
 import com.gabriellabritz.build_finance_api.infra.crypto.TokenHasher;
 import com.gabriellabritz.build_finance_api.infra.email.EmailService;
+import com.gabriellabritz.build_finance_api.infra.exceptions.business.email_verification_tokens.EmailVerificationTokenNotFoundException;
 import com.gabriellabritz.build_finance_api.infra.exceptions.business.email_verification_tokens.InvalidVerificationTokenException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -33,6 +36,7 @@ public class EmailVerificationTokenService {
         emailService.sendVerificationEmail(user.getName(), user.getEmail(), token);
     }
 
+    @Transactional
     public EmailVerificationResponseDto verifyEmailVerificationToken(String token) {
         byte[] tokenHash = tokenHasher.hash(token);
 
@@ -44,5 +48,18 @@ public class EmailVerificationTokenService {
         emailVerificationTokenRepository.delete(verificationToken);
 
         return new EmailVerificationResponseDto("Sua conta foi verificada com sucesso! Faça seu login e começe a utilizar a plataforma.");
+    }
+
+    @Transactional
+    public void updateEmailVerificationToken(User user) {
+        EmailVerificationToken verificationToken = emailVerificationTokenRepository.findByUserId(user.getId())
+                .orElseThrow(EmailVerificationTokenNotFoundException::new);
+
+        String token = UUID.randomUUID().toString();
+        byte[] tokenHash = tokenHasher.hash(token);
+
+        verificationToken.replaceToken(tokenHash);
+
+        emailService.sendVerificationEmail(user.getName(), user.getEmail(), token);
     }
 }
