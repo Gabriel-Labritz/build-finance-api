@@ -2,7 +2,6 @@ package com.gabriellabritz.build_finance_api.domain.authentication.email_verific
 
 import com.gabriellabritz.build_finance_api.domain.authentication.email_verificaton_tokens.dtos.EmailVerificationResponseDto;
 import com.gabriellabritz.build_finance_api.domain.user.User;
-import com.gabriellabritz.build_finance_api.domain.user.UserRepository;
 import com.gabriellabritz.build_finance_api.infra.crypto.TokenHasher;
 import com.gabriellabritz.build_finance_api.infra.email.EmailService;
 import com.gabriellabritz.build_finance_api.infra.exceptions.business.email_verification_tokens.EmailVerificationTokenNotFoundException;
