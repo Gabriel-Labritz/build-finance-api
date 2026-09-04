@@ -22,7 +22,7 @@ public class EmailVerificationService {
     public EmailVerificationResponseDto resendVerificationEmail(ResendVerificationRequestDto resendVerificationRequestDto) {
         String email = resendVerificationRequestDto.email().trim().toLowerCase(Locale.ROOT);
 
-        Optional<User> userOptional = userRepository.findByEmail(email);
+        Optional<User> userOptional = userRepository.findByEmailIgnoreCase(email);
 
         if(userOptional.isPresent()) {
             User user = userOptional.get();

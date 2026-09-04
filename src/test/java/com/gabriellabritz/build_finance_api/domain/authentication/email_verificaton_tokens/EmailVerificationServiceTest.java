@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,7 +43,7 @@ class EmailVerificationServiceTest {
         @DisplayName("Deve enviar o email de verificação se o usuário for encontrado e não está verificado.")
         void shouldSendTheEmailVerificationIfUserIsFoundAndIsNotVerified() {
             // Arrange
-            when(userRepository.findByEmail(resendVerificationRequestDto.email()))
+            when(userRepository.findByEmailIgnoreCase(resendVerificationRequestDto.email()))
                     .thenReturn(Optional.of(user));
             when(user.isVerified()).thenReturn(false);
 
@@ -59,7 +58,7 @@ class EmailVerificationServiceTest {
         @DisplayName("Não deve enviar o email de verificação se o usuário não for encontrado.")
         void shouldNotSendTheEmailVerificationIfUserIsNotFound() {
             // Arrange
-            when(userRepository.findByEmail(resendVerificationRequestDto.email()))
+            when(userRepository.findByEmailIgnoreCase(resendVerificationRequestDto.email()))
                     .thenReturn(Optional.empty());
 
             // Act
@@ -73,7 +72,7 @@ class EmailVerificationServiceTest {
         @DisplayName("Não deve enviar o email de verificação se o usuário já está verificado.")
         void shouldNotSendTheEmailVerificationIfUserIsAlreadyVerified() {
             // Arrange
-            when(userRepository.findByEmail(resendVerificationRequestDto.email()))
+            when(userRepository.findByEmailIgnoreCase(resendVerificationRequestDto.email()))
                     .thenReturn(Optional.of(user));
             when(user.isVerified()).thenReturn(true);
 
