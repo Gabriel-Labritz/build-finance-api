@@ -1,6 +1,7 @@
 package com.gabriellabritz.build_finance_api.domain.authentication.login;
 
 import com.gabriellabritz.build_finance_api.domain.authentication.login.dtos.request.LoginRequestDto;
+import com.gabriellabritz.build_finance_api.domain.authentication.login.dtos.response.LoginResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,7 @@ public class LoginController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<Void> signIn(@RequestBody @Valid LoginRequestDto loginRequestDto) {
-        loginService.loginUser(loginRequestDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<LoginResponseDto> signIn(@RequestBody @Valid LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok().body(loginService.loginUser(loginRequestDto));
     }
 }

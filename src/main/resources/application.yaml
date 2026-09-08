@@ -33,5 +33,12 @@ app:
   email:
    origin: ${EMAIL_USERNAME}
    sender: Build Finance
+
   url:
    site: http://localhost:8080
+
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      issuer: Build Finance API
+      access_token_expiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
